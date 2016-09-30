@@ -1,9 +1,7 @@
-<h2 align="left">Types&thinsp;Of&thinsp;Delegation</h2>
-<h4 align="left">Use a Type's fields as operands for the type's operations. Apply functions onto fields' values.  Easily.</h4>
+<h2 align="left">Typed&thinsp;Delegation&thinsp;.jl</h2>
 =====
-<p align="center">
-Jeffrey Sarnoff © 2016 Sep 29 &thinsp;&#8285&thinsp; New York, USA
-</p>
+<h4 align="center">Use a Type's fields as operands for the type's operations. Apply functions onto fields' values.  Easily.</h4>
+<h4 align="center">Jeffrey Sarnoff © 2016 Sep 30 &thinsp;&#8285&thinsp; New York, USA</h4>
 
 =====
 
@@ -245,10 +243,9 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
 ------
 
-#### Version
+### Notes
 
-This is v0.1.0 for Julia v0.5, v0.6.
-
+[TypedDelegation.jl](https://github.com/JuliaArbTypes/TypedDelegation.jl) v0.1.0 for Julia v0.5, 0.6
 
 
 ### References
