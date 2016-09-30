@@ -1,4 +1,4 @@
-using DelegationMacros
+using TypedDelegation
 using Base.Test
 
 import Base: string, abs, 
