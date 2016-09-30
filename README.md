@@ -8,13 +8,6 @@ Jeffrey Sarnoff © 2016 Sep 29 &thinsp;&#8285&thinsp; New York, USA
 =====
 
 
-#### notes
-
-v0.1.0 for Julia versions 0.5, 0.6  
-
-This derives from work by John Myles White and Toivo Henningsson, q.v. __References___.  
-
-
 ### Exports
 
 This package offers macros that delegate functions over one or more fields of a type;      
@@ -252,8 +245,15 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
 ------
 
+#### Version
+
+This is v0.1.0 for Julia v0.5, v0.6.
+
+
+
 ### References
 
+This derives directly from work by John Myles White and Toivo Henningsson.
 
 - description and logic from John Myles White  
 --   (https://gist.github.com/johnmyleswhite/5225361)
