@@ -15,7 +15,7 @@ and macros that delegate operations through fields to return a value of the same
         @delegate_twoFields_fromTwoVars_asType    #          (return type from args)   
 
 """
-module TypesOfDelegation
+module TypedDelegation
 
 export @delegate_oneField,                       #     apply functions over field
        @delegate_oneField_fromTwoVars,           #          (return type from func) 
@@ -414,4 +414,4 @@ end
         <https://groups.google.com/forum/#!msg/julia-dev/MV7lYRgAcB0/-tS50TreaPoJ?
 =#
 
-end # module DelegationMacros
+end # module TypedDelegation
