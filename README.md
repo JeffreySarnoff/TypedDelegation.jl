@@ -7,10 +7,12 @@ Jeffrey Sarnoff © 2016 Sep 29 &thinsp;&#8285&thinsp; New York, USA
 
 =====
 
-v0.1.0 for Julia versions 0.5, 0.6
 
-This derives directly from work by John Myles White and Toivo Henningsson  
-URIs referencing their work are given under __References__.
+#### notes
+
+v0.1.0 for Julia versions 0.5, 0.6  
+
+This derives from work by John Myles White and Toivo Henningsson, q.v. __References___.  
 
 
 ### Exports
