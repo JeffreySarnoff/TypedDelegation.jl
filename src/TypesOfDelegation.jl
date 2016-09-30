@@ -15,7 +15,7 @@ and macros that delegate operations through fields to return a value of the same
         @delegate_twoFields_fromTwoVars_asType    #          (return type from args)   
 
 """
-module DelegationMacros
+module TypesOfDelegation
 
 export @delegate_oneField,                       #     apply functions over field
        @delegate_oneField_fromTwoVars,           #          (return type from func) 
