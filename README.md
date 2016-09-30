@@ -247,7 +247,7 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
 ### Notes
 
-This is [TypesOfDelegation.jl](https://github.com/JuliaArbTypes/TypesOfDelegation.jl) v0.1.0 for Julia v0.5, 0.6
+[TypesOfDelegation.jl](https://github.com/JuliaArbTypes/TypesOfDelegation.jl) v0.1.0 for Julia v0.5, 0.6
 
 
 ### References
