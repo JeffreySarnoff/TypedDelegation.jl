@@ -35,8 +35,8 @@ and macros that delegate operations through fields to return a value of the same
    
 ### Install and Use
 ```julia
-Pkg.add("DelegationMacros")
-using DelegationMacros   
+Pkg.add("TypedDelegation")
+using TypedDelegation   
 ```
 
 ### Examples of Use
