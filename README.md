@@ -19,15 +19,25 @@ This package offers macros that delegate functions over one or more fields of a 
 and macros that delegate operations through fields to return a value of the same type.
 
 ```julia
-        @delegate_oneField,                       #     apply functions over one field   
-        @delegate_oneField_fromTwoVars,           #          (return type from func)    
-        @delegate_oneField_asType,                #     and reobtain the same type   
-        @delegate_oneField_fromTwoVars_asType,    #          (return type from args)   
+        #     apply functions through a given Type T, using one field as a parameter
+        #
+        #           evaluates as the type that the function returns
+        @delegate_oneField,                       #  fn(x::T)
+        @delegate_oneField_fromTwoVars,           #  fn(x::T, y::T)
+        #
+        #           evaluates as the type that is used in delegation
+        @delegate_oneField_asType,                #  op(x::T)::T
+        @delegate_oneField_fromTwoVars_asType,    #  op(x::T, y::T)::T
                                                   #
-        @delegate_twoFields,                      #     apply functions over two fields   
-        @delegate_twoFields_fromTwoVars,          #          (return type from func)    
-        @delegate_twoFields_asType,               #     and reobtain the same type   
-        @delegate_twoFields_fromTwoVars_asType    #          (return type from args)   
+        #     apply functions through a given Type, using two fields as parameters
+        #
+        #           evaluates as the type that the function returns
+        @delegate_twoFields,                      #  fn(x::T)
+        @delegate_twoFields_fromTwoVars,          #  fn(x::T, y::T)
+        #
+        #           evaluates as the type that is used in delegation
+        @delegate_twoFields_asType,               #  op(x::T)::T
+        @delegate_twoFields_fromTwoVars_asType    #  op(x::T, y::T)::T
 ```
 
 
