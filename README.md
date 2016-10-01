@@ -19,12 +19,12 @@ This package offers macros that delegate functions over one or more fields of a 
 and macros that delegate operations through fields to return a value of the same type.
 
 ```julia
-        @delegate_oneField,                       #     apply functions over field   
+        @delegate_oneField,                       #     apply functions over one field   
         @delegate_oneField_fromTwoVars,           #          (return type from func)    
         @delegate_oneField_asType,                #     and reobtain the same type   
         @delegate_oneField_fromTwoVars_asType,    #          (return type from args)   
                                                   #
-        @delegate_twoFields,                      #     apply functions over fields   
+        @delegate_twoFields,                      #     apply functions over two fields   
         @delegate_twoFields_fromTwoVars,          #          (return type from func)    
         @delegate_twoFields_asType,               #     and reobtain the same type   
         @delegate_twoFields_fromTwoVars_asType    #          (return type from args)   
