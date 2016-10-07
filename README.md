@@ -38,6 +38,17 @@ and macros that delegate operations through fields to return a value of the same
         #           evaluates as the type that is used in delegation
         @delegate_twoFields_asType,               #  op(x::T)::T
         @delegate_twoFields_fromTwoVars_asType    #  op(x::T, y::T)::T
+
+                                                  #
+        #     apply functions through a given Type, using three fields as parameters
+        #
+        #           evaluates as the type that the function returns
+        @delegate_threeFields,                    #  fn(x::T)
+        @delegate_threeFields_fromTwoVars,        #  fn(x::T, y::T)
+        #
+        #           evaluates as the type that is used in delegation
+        @delegate_threeFields_asType,             #  op(x::T)::T
+        @delegate_threeFields_fromTwoVars_asType  #  op(x::T, y::T)::T
 ```
 
 
@@ -156,8 +167,8 @@ using TypedDelegation
    
    
 ```
-@delegate_twoFields_asType(sourceType, firstField, secondField, targetedOps)
-This returns a value of the same type as the `sourceType` by rewrapping the result.
+# @@delegate_twoFields_asType(sourceType, firstField, secondField, targetedOps)
+# This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     function renormalize(a::Float64, b::Float64)
       hi = a + b
@@ -179,13 +190,8 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
 
 
 ```julia
-@delegate_twoFields_fromTwoVars(sourceType, firstField, secondField, targetedFuncs)
-This returns a value of same types as the `targetedFuncs` result types.
-
-A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
-  that evalutes two fields of `TheType` from arg1 and also from arg2.
-      result = targetedFunc( arg1.firstField, arg1.secondField,  
-                             arg2.firstField, arg2.secondField )
+# @delegate_twoFields_fromTwoVars(sourceType, firstField, secondField, targetedFuncs)
+# This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: mean
 
@@ -218,16 +224,8 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 ```
 
 ```julia
-@delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedFuncs)
-This returns a value of the same type as the `sourceType` by rewrapping the result.
-
-A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
-  that evalutes two fields of `TheType` from arg1 and also from arg2
-  and applies itself over them, obtaining field_values for constructive
-  generation of the result; a new realization of TheType( field_values... ).
-
-      TheType(targetedFunc( arg1.firstField, arg1.secondField,  
-                            arg2.firstField, arg2.secondField )...)
+# @delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedOps)
+# This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: union, intersect
 
@@ -256,6 +254,41 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
     two_four  = MyInterval(2, 4);
 
     union( one_three, two_four ) == MyInterval(1, 4) # true
+```   
+
+
+
+   
+```
+# @delegate_threeFields(sourceType, firstField, secondField, thirdField, targetedFuncs)
+# This returns a value of same types as the `targetedFuncs` result types.
+
+
+
+```
+   
+   
+   
+```
+# @@delegate_threeFields_asType(sourceType, firstField, secondField, targetedOps)
+# This returns a value of the same type as the `sourceType` by rewrapping the result.
+
+
+```
+
+
+```julia
+# @delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thirdField, targetedFuncs)
+# This returns a value of same types as the `targetedFuncs` result types.
+
+
+```
+
+```julia
+# @delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondField, thirdField, targetedOps)
+# This returns a value of the same type as the `sourceType` by rewrapping the result.
+
+
 ```   
 
 ------
