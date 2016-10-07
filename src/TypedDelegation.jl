@@ -93,10 +93,10 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
     three <  seven                 # true
     seven <= three                 # false
 """
-macro delegate_oneField_fromTwoVars(sourceType, sourceField, targetedOps)
+macro delegate_oneField_fromTwoVars(sourceType, sourceField, targetedFuncs)
   typesname  = esc( :($sourceType) )
   fieldname = esc(Expr(:quote, sourceField))
-  funcnames  = targetedOps.args
+  funcnames  = targetedFuncs.args
   n = length(funcnames)
   fdefs = Array(Any, n)
   for i in 1:n
@@ -136,10 +136,10 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
     -(seven) === MyInt16(-7)       # true
 
 """
-macro delegate_oneField_asType(sourceType, sourceField, targetedFuncs)
+macro delegate_oneField_asType(sourceType, sourceField, targetedOps)
   typesname  = esc( :($sourceType) )
   fieldname = esc(Expr(:quote, sourceField))
-  funcnames  = targetedFuncs.args
+  funcnames  = targetedOps.args
   n = length(funcnames)
   fdefs = Array(Any, n)
   for i in 1:n
@@ -207,8 +207,8 @@ This returns a value of same types as the `targetedFuncs` result types.
     import Base: hypot
     
     immutable RightTriangle
-      legA::Float64;
-      legB::Float64;  
+      legA::Float64
+      legB::Float64  
     end;
 
     @delegate_twoFields( RightTriangle, legA, legB, [ hypot, ] );
@@ -251,8 +251,8 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
     end
 
     immutable HiLo  
-      hi::Float64;
-      lo::Float64;   
+      hi::Float64
+      lo::Float64   
     end;
     
     @delegate_twoFields_asType( HiLo, hi, lo, [ renormalize, ] );
@@ -377,11 +377,11 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
     union( one_three, two_four ) == MyInterval(1, 4) # true
 """
-macro delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedFuncs)
+macro delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedOps)
   typesname  = esc( :($sourceType) )
   field1name = esc(Expr(:quote, firstField))
   field2name = esc(Expr(:quote, secondField))
-  funcnames  = targetedFuncs.args
+  funcnames  = targetedOps.args
   n = length(funcnames)
   fdefs = Array(Any, n)
   for i in 1:n
@@ -396,6 +396,214 @@ macro delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField,
   return Expr(:block, fdefs...)
 end
 
+
+#=
+»      delegation using three fields of a type   
+=#
+
+
+#=
+»»        versions for use when the result type differs from the type of the params
+=#
+
+doc"""
+@delegate_threeFields(sourceType, firstField, secondField, targetedFuncs)
+This returns a value of same types as the `targetedFuncs` result types.
+
+    import Base: norm 
+
+    norm{T<:AbstractFloat}(x::T, y::T, z::T) = norm([x, y, z])
+    
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+
+    @delegate_threeFields( XYZ, x, y, z, [ norm, ] );
+  
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    norm(pointA)   #  7.0710678+
+
+"""     
+macro delegate_threeFields(sourceType, firstField, secondField, thirdField, targetedFuncs)
+  typesname  = esc( :($sourceType) )
+  field1name = esc(Expr(:quote, firstField))
+  field2name = esc(Expr(:quote, secondField))
+  field3name = esc(Expr(:quote, thirdField))
+  funcnames  = targetedFuncs.args
+  n = length(funcnames)
+  fdefs = Array(Any, n)
+  for i in 1:n
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), args...) = 
+                   ($funcname)(getfield(a, ($field1name)), 
+                               getfield(a, ($field2name)), 
+                               getfield(a, ($field3name)), args...)
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+#=
+»»        versions for use when the result has the same type as the params
+=#
+
+doc"""
+@delegate_threeFields_asType(sourceType, firstField, secondField, targetedOps)
+This returns a value of the same type as the `sourceType` by rewrapping the result.
+
+    import Base: normalize
+
+    normalize{T<:AbstractFloat}(x::T, y::T, z::T) = normalize([x, y, z])
+
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+
+    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
+    
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    normalize(pointA)   #  XYZ( 0.424264+, 0.565685+, 0.707107- )
+"""
+macro delegate_threeFields_asType(sourceType, firstField, secondField, thirdField, targetedOps)
+  typesname  = esc( :($sourceType) )
+  field1name = esc(Expr(:quote, firstField))
+  field2name = esc(Expr(:quote, secondField))
+  field3name = esc(Expr(:quote, thirdField))
+  funcnames  = targetedOps.args
+  n = length(funcnames)
+  fdefs = Array(Any, n)
+  for i in 1:n
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), args...) = 
+                    ($typesname)( ($funcname)(getfield(a, ($field1name)), 
+                                              getfield(a, ($field2name)),
+                                              getfield(a, ($field3name)), args...)... )
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+doc"""
+@delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thirdField, targetedFuncs)
+This returns a value of same types as the `targetedFuncs` result types.
+
+A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
+  that evalutes three fields of `TheType` from arg1 and also from arg2.
+      result = targetedFunc( arg1.firstField, arg1.secondField, arg1.thirdField,  
+                             arg2.firstField, arg2.secondField, arg2.thirdField )
+
+    import Base: norm, normalize, cross, sin
+
+    normalize{T<:AbstractFloat}(x::T, y::T, z::T) = 
+        normalize([x, y, z])
+
+    cross{T<:AbstractFloat}(x1::T, y1::T, z1::T, 
+                            x2::T, y2::T, z2::T) = 
+        cross([x1, y1, z1], [x2, y2, z2])
+
+
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+
+
+    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
+    @delegate_threeFields_fromTwoVars( XYZ, x, y, z, [ cross, ] );
+
+    function sin( pointA::XYZ, pointB::XYZ )
+        norm( cross( normalize(pointA), normalize(pointB) ) )
+    end
+    
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    pointB  = XYZ( 5.0, 4.0, 3.0 );
+
+    sin(pointA, pointB) #  0.391918+
+"""
+macro delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thirdField, targetedFuncs)
+  typesname  = esc( :($sourceType) )
+  field1name = esc(Expr(:quote, firstField))
+  field2name = esc(Expr(:quote, secondField))
+  field3name = esc(Expr(:quote, thirdField))
+  funcnames  = targetedFuncs.args
+  n = length(funcnames)
+  fdefs = Array(Any, n)
+  for i in 1:n
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), b::($typesname), args...) = 
+                     ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
+                                 getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
+                                 args...)
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+doc"""
+@delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondField, thirdField, targetedOps)
+This returns a value of the same type as the `sourceType` by rewrapping the result.
+
+A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
+  that evalutes three fields of `TheType` from arg1 and also from arg2
+  and applies itself over them, obtaining field_values for constructive
+  generation of the result; a new realization of TheType( field_values... ).
+
+      TheType( targetedFunc( arg1.firstField, arg1.secondField, arg1.thirdField, 
+                             arg2.firstField, arg2.secondField, arg2.thirdField )... )
+
+
+    import Base: cross
+
+    cross{T<:AbstractFloat}(x1::T, y1::T, z1::T, 
+                            x2::T, y2::T, z2::T) = 
+        cross([x1, y1, z1], [x2, y2, z2])
+
+
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+
+
+    @delegate_threeFields_fromTwoVars_asType( XYZ, x, y, z, [ cross, ] );
+
+    
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    pointB  = XYZ( 5.0, 4.0, 3.0 );
+
+    cross(pointA, pointB) #  XYZ(-8.0, 16.0, -8.0)
+"""
+macro delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondField,  thirdField, targetedOps)
+  typesname  = esc( :($sourceType) )
+  field1name = esc(Expr(:quote, firstField))
+  field2name = esc(Expr(:quote, secondField))
+  field3name = esc(Expr(:quote, thirdField))
+  funcnames  = targetedOps.args
+  n = length(funcnames)
+  fdefs = Array(Any, n)
+  for i in 1:n
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), b::($typesname), args...) = 
+                     ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
+                                               getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
+                                               args...)... )
+               end
+    end
+  return Expr(:block, fdefs...)
+end
 
 #=
 # ~~~~~~~~
