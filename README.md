@@ -61,6 +61,10 @@ using TypedDelegation
 ```
 
 ### Examples of Use
+
+#### Delegation with one field
+
+
 ```julia
 # @delegate_oneField(sourceType, sourceField, targetedFuncs)
 # This returns a value of same types as the `targetedFuncs` result types.
@@ -145,6 +149,7 @@ using TypedDelegation
     three * seven == MyInt16(3*7)  # true```
 ```
    
+#### Delegation with two fields
    
    
 ```
@@ -256,7 +261,7 @@ using TypedDelegation
     union( one_three, two_four ) == MyInterval(1, 4) # true
 ```   
 
-
+#### Delegation with three fields
 
    
 ```
@@ -264,7 +269,21 @@ using TypedDelegation
 # This returns a value of same types as the `targetedFuncs` result types.
 
 
-
+    import Base: norm 
+    
+    norm{R<:Real}(xs::Vararg{R,3}) = norm([xs...])
+    
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+    
+    @delegate_threeFields( XYZ, x, y, z, [ norm, ] );
+  
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    
+    norm(pointA)   #  7.0710678+
 ```
    
    
@@ -273,7 +292,21 @@ using TypedDelegation
 # @@delegate_threeFields_asType(sourceType, firstField, secondField, targetedOps)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
-
+    import Base: normalize
+    
+    normalize{R<:Real}(xs::Vararg{R,3}) = normalize([xs...])
+    
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+    
+    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
+    
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    
+    normalize(pointA)   #  XYZ( 0.424264+, 0.565685+, 0.707107- )
 ```
 
 
@@ -281,14 +314,50 @@ using TypedDelegation
 # @delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thirdField, targetedFuncs)
 # This returns a value of same types as the `targetedFuncs` result types.
 
-
+    import Base: norm, normalize, cross, sin
+    
+    normalize{R<:Real}(xs::Vararg{R,3}) = normalize([xs...])
+    cross{R<:Real}(xs::Vararg{R,6}) = cross([xs[1:3]...], [xs[4:6]...])
+    
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+    
+    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
+    @delegate_threeFields_fromTwoVars( XYZ, x, y, z, [ cross, ] );
+    
+    function sin( pointA::XYZ, pointB::XYZ )
+        norm( cross( normalize(pointA), normalize(pointB) ) )
+    end
+    
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    pointB  = XYZ( 5.0, 4.0, 3.0 );
+    
+    sin(pointA, pointB) #  0.391918+
 ```
 
 ```julia
 # @delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondField, thirdField, targetedOps)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
-
+    import Base: cross
+    
+    cross{R<:Real}(xs::Vararg{R,6}) = cross([xs[1:3]...], [xs[4:6]...])
+    
+    immutable XYZ
+      x::Float64
+      y::Float64
+      z::Float64
+    end;
+    
+    @delegate_threeFields_fromTwoVars_asType( XYZ, x, y, z, [ cross, ] );
+    
+    pointA  = XYZ( 3.0, 4.0, 5.0 );
+    pointB  = XYZ( 5.0, 4.0, 3.0 );
+    
+    cross(pointA, pointB) #  XYZ(-8.0, 16.0, -8.0)
 ```   
 
 ------
