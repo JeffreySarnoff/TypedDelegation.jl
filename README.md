@@ -364,7 +364,7 @@ using TypedDelegation
 
 ### Notes
 
-[TypedDelegation.jl](https://github.com/JuliaArbTypes/TypedDelegation.jl) v0.1.0 for Julia v0.5, 0.6
+[TypedDelegation.jl](https://github.com/JuliaArbTypes/TypedDelegation.jl) v0.1.2 for Julia v0.5, 0.6
 
 
 ### References
