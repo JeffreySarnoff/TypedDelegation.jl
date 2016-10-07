@@ -13,7 +13,11 @@ and macros that delegate operations through fields to return a value of the same
         @delegate_twoFields_fromTwoVars,          #          (return type from func)    
         @delegate_twoFields_asType,               #     and reobtain the same type   
         @delegate_twoFields_fromTwoVars_asType    #          (return type from args)   
-
+                                                  #
+        @delegate_threeFields,                    #     apply functions over fields
+        @delegate_threeFields_fromTwoVars,        #          (return type from func) 
+        @delegate_threeFields_asType,             #     and reobtain the same type
+        @delegate_threeFields_fromTwoVars_asType  #          (return type from args)
 """
 module TypedDelegation
 
@@ -25,7 +29,12 @@ export @delegate_oneField,                       #     apply functions over fiel
        @delegate_twoFields,                      #     apply functions over fields
        @delegate_twoFields_fromTwoVars,          #          (return type from func) 
        @delegate_twoFields_asType,               #     and reobtain the same type
-       @delegate_twoFields_fromTwoVars_asType    #          (return type from args)
+       @delegate_twoFields_fromTwoVars_asType,   #          (return type from args)
+                                                 #
+       @delegate_threeFields,                    #     apply functions over fields
+       @delegate_threeFields_fromTwoVars,        #          (return type from func) 
+       @delegate_threeFields_asType,             #     and reobtain the same type
+       @delegate_threeFields_fromTwoVars_asType  #          (return type from args)
 
 
 
@@ -412,7 +421,7 @@ This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: norm 
 
-    norm{T<:AbstractFloat}(x::T, y::T, z::T) = norm([x, y, z])
+    norm{R<:Real}(xs::Vararg{R,3}) = norm([xs...])
     
     immutable XYZ
       x::Float64
@@ -457,7 +466,7 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
 
     import Base: normalize
 
-    normalize{T<:AbstractFloat}(x::T, y::T, z::T) = normalize([x, y, z])
+    normalize{R<:Real}(xs::Vararg{R,3}) = normalize([xs...])
 
     immutable XYZ
       x::Float64
@@ -502,12 +511,9 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
     import Base: norm, normalize, cross, sin
 
-    normalize{T<:AbstractFloat}(x::T, y::T, z::T) = 
-        normalize([x, y, z])
+    normalize{R<:Real}(xs::Vararg{R,3}) = normalize([xs...])
 
-    cross{T<:AbstractFloat}(x1::T, y1::T, z1::T, 
-                            x2::T, y2::T, z2::T) = 
-        cross([x1, y1, z1], [x2, y2, z2])
+    cross{R<:Real}(xs::Vararg{R,6}) = cross([xs[1:3]...], [xs[4:6]...])
 
 
     immutable XYZ
@@ -565,9 +571,7 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
     import Base: cross
 
-    cross{T<:AbstractFloat}(x1::T, y1::T, z1::T, 
-                            x2::T, y2::T, z2::T) = 
-        cross([x1, y1, z1], [x2, y2, z2])
+    cross{R<:Real}(xs::Vararg{R,6}) = cross([xs[1:3]...], [xs[4:6]...])
 
 
     immutable XYZ
