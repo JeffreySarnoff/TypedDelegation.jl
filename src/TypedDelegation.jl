@@ -56,15 +56,16 @@ macro fieldsyms( aType )
 end 
 
 """
-@fieldstrs aType ) yields the string forms of the fields in aType
+@fieldsyms( aType, nFields ) yields the symbols for the first nFields declared in Type (in order)
 """
-macro fieldstrs( aType )
+macro fieldsyms( aType, nFields )
     return quote
-        local syms = @fieldsyms( ($aType) )
-        local strs = map(string, syms)
-        strs
+        local allsyms = @fieldsyms( $aType )
+        local syms = allvals[1:$nFields]
+        syms
     end
-end
+end    
+
 
 """
 @getfield( varOfType, symFieldOfType ) works like getfield(varOfType, symFieldOfType)
@@ -96,7 +97,7 @@ macro fieldvalues( varOfType )
 end
 
 """
-@fieldvalues( varOfType, nFields ) yields thethe values of the first nFields declared in Type (in order)
+@fieldvalues( varOfType, nFields ) yields the values of the first nFields declared in Type (in order)
 """
 macro fieldvalues( varOfType, nFields )
     return quote
