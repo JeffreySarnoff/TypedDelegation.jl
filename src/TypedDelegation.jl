@@ -37,6 +37,58 @@ export @delegate_oneField,                       #     apply functions over fiel
        @delegate_threeFields_fromTwoVars_asType  #          (return type from args)
 
 
+#=
+»      internal macros, compositable
+=#
+
+"""
+@fieldtypes( aType ) works like aType.types
+"""
+macro fieldtypes( aType )
+    esc( :( getfield( $aType, :types ) ) )
+end 
+
+"""
+@fieldsyms( aType ) works like fieldnames(aType)
+"""
+macro fieldsyms( aType )
+    esc( :( fieldnames( $aType ) ) )
+end 
+
+"""
+@fieldstrs aType ) yields the string forms of the fields in aType
+"""
+macro fieldstrs( aType )
+    return quote
+        local syms = @fieldsyms( ($aType) )
+        local strs = map(string, syms)
+        strs
+    end
+end
+
+"""
+@getfield( varOfType, symFieldOfType ) works like getfield(varOfType, symFieldOfType)
+"""
+macro getfield( varOfType, symFieldOfType)
+    esc( :( getfield( ($varOfType), ($symFieldOfType) )) )
+end
+
+"""
+@getfields( varOfType ) yields a tuple of field values for varOfType (in order)
+"""
+macro getfields( varOfType )
+    return quote
+        local syms = @fieldsyms( typeof( $varOfType ) ) 
+        local vals = Vector( 0 )
+        for item in syms
+            push!( vals, @getfield( $varOfType, item ) )
+        end
+        (vals...)
+    end
+end
+
+
+
 
 #=
 »      delegation using one field of a type   
@@ -81,6 +133,7 @@ macro delegate_oneField(sourceType, sourceField, targetedFuncs)
     end
   return Expr(:block, fdefs...)
 end
+
 
 doc"""
 @delegate_oneField_fromTwoVars(sourceType, sourceField, targetedOps)
