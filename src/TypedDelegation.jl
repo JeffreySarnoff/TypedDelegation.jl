@@ -88,6 +88,24 @@ macro getfields( varOfType )
 end
 
 
+"""
+@fieldvalues( varOfType ) yields the values of the fields in varOfType (in order)
+"""
+macro fieldvalues( varOfType )
+    esc( :( @getfields( $varOfType ) ) )
+end
+
+"""
+@fieldvalues( varOfType, nFields ) yields thethe values of the first nFields declared in Type (in order)
+"""
+macro fieldvalues( varOfType, nFields )
+    return quote
+        local allvals = @fieldvalues( $varOfType )
+        local vals = allvals[1:$nFields]
+        vals
+    end
+end    
+        
 
 
 #=
