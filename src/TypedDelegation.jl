@@ -139,11 +139,10 @@ This returns a value of same types as the `targetedFuncs` result types.
 """
 macro delegate_oneField(sourceType, sourceField, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  fieldname = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedFuncs.args
-  n = length(funcnames)
   fdefs = Array(Any, n)
-  for i in 1:n
+  for i in 1:length(funcnames)
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) = 
@@ -176,11 +175,10 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 """
 macro delegate_oneField_fromTwoVars(sourceType, sourceField, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  fieldname = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedFuncs.args
-  n = length(funcnames)
   fdefs = Array(Any, n)
-  for i in 1:n
+  for i in 1:length(funcnames)
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) =
@@ -219,11 +217,10 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
 """
 macro delegate_oneField_asType(sourceType, sourceField, targetedOps)
   typesname  = esc( :($sourceType) )
-  fieldname = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedOps.args
-  n = length(funcnames)
   fdefs = Array(Any, n)
-  for i in 1:n
+  for i in 1:length(funcnames)
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) =
@@ -255,11 +252,10 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
 """
 macro delegate_oneField_fromTwoVars_asType(sourceType, sourceField, targetedOps)
   typesname  = esc( :($sourceType) )
-  fieldname = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedOps.args
-  n = length(funcnames)
   fdefs = Array(Any, n)
-  for i in 1:n
+  for i in 1:length(funcnames)
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) =
