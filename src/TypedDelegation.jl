@@ -155,7 +155,7 @@ end
 
 
 doc"""
-@delegate_oneField_fromTwoVars(sourceType, sourceField, targetedOps)
+@delegate_oneField_fromTwoVars(sourceType, sourceField, targetedFuncs)
 This returns a value of same types as the `targetedOps` result types.
 
 A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
@@ -199,7 +199,7 @@ end
 
 
 doc"""
-@delegate_oneField_asType(sourceType, sourceField, targetedFuncs)
+@delegate_oneField_asType(sourceType, sourceField, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: abs, (-)
@@ -419,7 +419,7 @@ end
 
 
 doc"""
-@delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedFuncs)
+@delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
 A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
