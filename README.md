@@ -1,8 +1,9 @@
-<h2 align="left">Typed&thinsp;Delegation&thinsp;.jl</h2>
+## TypedDelegation.jl
 =====
-<h4 align="center">Use a Type's fields as operands for the type's operations. Apply functions onto fields' values.  Easily.</h4>
 
-<h4 align="center">Jeffrey Sarnoff © 2016 Sep 30 &thinsp;&#8285&thinsp; New York, USA</h4>
+#### Use a Type's fields as operands for the type's operations. Apply functions onto fields' values.  Easily.<
+
+Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.
 
 =====
 
