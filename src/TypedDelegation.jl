@@ -141,8 +141,9 @@ macro delegate_oneField(sourceType, sourceField, targetedFuncs)
   typesname  = esc( :($sourceType) )
   fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedFuncs.args
-  fdefs = Array(Any, n)
-  for i in 1:length(funcnames)
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) = 
@@ -177,8 +178,9 @@ macro delegate_oneField_fromTwoVars(sourceType, sourceField, targetedFuncs)
   typesname  = esc( :($sourceType) )
   fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedFuncs.args
-  fdefs = Array(Any, n)
-  for i in 1:length(funcnames)
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) =
@@ -219,8 +221,9 @@ macro delegate_oneField_asType(sourceType, sourceField, targetedOps)
   typesname  = esc( :($sourceType) )
   fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedOps.args
-  fdefs = Array(Any, n)
-  for i in 1:length(funcnames)
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) =
@@ -254,8 +257,9 @@ macro delegate_oneField_fromTwoVars_asType(sourceType, sourceField, targetedOps)
   typesname  = esc( :($sourceType) )
   fieldname  = esc(Expr(:quote, sourceField))
   funcnames  = targetedOps.args
-  fdefs = Array(Any, n)
-  for i in 1:length(funcnames)
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) =
@@ -299,9 +303,9 @@ macro delegate_twoFields(sourceType, firstField, secondField, targetedFuncs)
   field1name = esc(Expr(:quote, firstField))
   field2name = esc(Expr(:quote, secondField))
   funcnames  = targetedFuncs.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) = 
@@ -343,9 +347,9 @@ macro delegate_twoFields_asType(sourceType, firstField, secondField, targetedOps
   field1name = esc(Expr(:quote, firstField))
   field2name = esc(Expr(:quote, secondField))
   funcnames  = targetedOps.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) = 
@@ -399,9 +403,9 @@ macro delegate_twoFields_fromTwoVars(sourceType, firstField, secondField, target
   field1name = esc(Expr(:quote, firstField))
   field2name = esc(Expr(:quote, secondField))
   funcnames  = targetedFuncs.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) = 
@@ -459,9 +463,9 @@ macro delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField,
   field1name = esc(Expr(:quote, firstField))
   field2name = esc(Expr(:quote, secondField))
   funcnames  = targetedOps.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) = 
@@ -509,9 +513,9 @@ macro delegate_threeFields(sourceType, firstField, secondField, thirdField, targ
   field2name = esc(Expr(:quote, secondField))
   field3name = esc(Expr(:quote, thirdField))
   funcnames  = targetedFuncs.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) = 
@@ -553,9 +557,9 @@ macro delegate_threeFields_asType(sourceType, firstField, secondField, thirdFiel
   field2name = esc(Expr(:quote, secondField))
   field3name = esc(Expr(:quote, thirdField))
   funcnames  = targetedOps.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), args...) = 
@@ -609,9 +613,9 @@ macro delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thir
   field2name = esc(Expr(:quote, secondField))
   field3name = esc(Expr(:quote, thirdField))
   funcnames  = targetedFuncs.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) = 
@@ -663,9 +667,9 @@ macro delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondFiel
   field2name = esc(Expr(:quote, secondField))
   field3name = esc(Expr(:quote, thirdField))
   funcnames  = targetedOps.args
-  n = length(funcnames)
-  fdefs = Array(Any, n)
-  for i in 1:n
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
     funcname = esc(funcnames[i])
     fdefs[i] = quote
                  ($funcname)(a::($typesname), b::($typesname), args...) = 
