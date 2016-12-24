@@ -3,8 +3,9 @@
 
 #### Use a Type's fields as operands for the type's operations. Apply functions onto fields' values.  Easily.<
 
-Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.
+##### Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.  
 
+> [![Build Status](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl)
 =====
 
 ### Offers
