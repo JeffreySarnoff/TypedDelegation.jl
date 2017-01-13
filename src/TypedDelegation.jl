@@ -19,7 +19,8 @@ and macros that delegate operations through fields to return a value of the same
 """
 module TypedDelegation
 
-export  @delegate_onefield,                   #     apply functions over field   
+export  @delegate_type, @delegate_type_astype,
+        @delegate_onefield,                   #     apply functions over field   
         @delegate_onefield_twovars,           #          (return type from func)    
         @delegate_onefield_astype,            #     and reobtain the same type   
         @delegate_onefield_twovars_astype,    #          (return type from args)   
