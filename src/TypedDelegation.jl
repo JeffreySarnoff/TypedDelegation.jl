@@ -4,37 +4,37 @@ and macros that delegate operations through fields to return a value of the same
 
 **exports**
 
-        @delegate_oneField,                       #     apply functions over field   
-        @delegate_oneField_fromTwoVars,           #          (return type from func)    
-        @delegate_oneField_asType,                #     and reobtain the same type   
-        @delegate_oneField_fromTwoVars_asType,    #          (return type from args)   
+        @delegate_onefield,                       #     apply functions over field   
+        @delegate_onefield_twovars,           #          (return type from func)    
+        @delegate_onefield_astype,                #     and reobtain the same type   
+        @delegate_onefield_twovars_astype,    #          (return type from args)   
                                                   #
-        @delegate_twoFields,                      #     apply functions over fields   
-        @delegate_twoFields_fromTwoVars,          #          (return type from func)    
-        @delegate_twoFields_asType,               #     and reobtain the same type   
-        @delegate_twoFields_fromTwoVars_asType    #          (return type from args)   
+        @delegate_twofields,                      #     apply functions over fields   
+        @delegate_twofields_twovars,          #          (return type from func)    
+        @delegate_twofields_astype,               #     and reobtain the same type   
+        @delegate_twofields_twovars_astype    #          (return type from args)   
                                                   #
-        @delegate_threeFields,                    #     apply functions over fields
-        @delegate_threeFields_fromTwoVars,        #          (return type from func) 
-        @delegate_threeFields_asType,             #     and reobtain the same type
-        @delegate_threeFields_fromTwoVars_asType  #          (return type from args)
+        @delegate_threefields,                    #     apply functions over fields
+        @delegate_threefields_twovars,        #          (return type from func) 
+        @delegate_threefields_astype,             #     and reobtain the same type
+        @delegate_threefields_twovars_astype  #          (return type from args)
 """
 module TypedDelegation
 
-export @delegate_oneField,                       #     apply functions over field
-       @delegate_oneField_fromTwoVars,           #          (return type from func) 
-       @delegate_oneField_asType,                #     and reobtain the same type
-       @delegate_oneField_fromTwoVars_asType,    #          (return type from args)
+export @delegate_onefield,                       #     apply functions over field
+       @delegate_onefield_twovars,           #          (return type from func) 
+       @delegate_onefield_astype,                #     and reobtain the same type
+       @delegate_onefield_twovars_astype,    #          (return type from args)
                                                  #
-       @delegate_twoFields,                      #     apply functions over fields
-       @delegate_twoFields_fromTwoVars,          #          (return type from func) 
-       @delegate_twoFields_asType,               #     and reobtain the same type
-       @delegate_twoFields_fromTwoVars_asType,   #          (return type from args)
+       @delegate_twofields,                      #     apply functions over fields
+       @delegate_twofields_twovars,          #          (return type from func) 
+       @delegate_twofields_astype,               #     and reobtain the same type
+       @delegate_twofields_twovars_astype,   #          (return type from args)
                                                  #
-       @delegate_threeFields,                    #     apply functions over fields
-       @delegate_threeFields_fromTwoVars,        #          (return type from func) 
-       @delegate_threeFields_asType,             #     and reobtain the same type
-       @delegate_threeFields_fromTwoVars_asType  #          (return type from args)
+       @delegate_threefields,                    #     apply functions over fields
+       @delegate_threefields_twovars,        #          (return type from func) 
+       @delegate_threefields_astype,             #     and reobtain the same type
+       @delegate_threefields_twovars_astype  #          (return type from args)
 
 
 #=
@@ -56,22 +56,22 @@ macro fieldsyms( aType )
 end 
 
 """
-@fieldsyms( aType, nFields ) yields the symbols for the first nFields declared in Type (in order)
+@fieldsyms( aType, nfields ) yields the symbols for the first nfields declared in Type (in order)
 """
-macro fieldsyms( aType, nFields )
+macro fieldsyms( aType, nfields )
     return quote
         local allsyms = @fieldsyms( $aType )
-        local syms = allvals[1:$nFields]
+        local syms = allvals[1:$nfields]
         syms
     end
 end    
 
 
 """
-@getfield( varOfType, symFieldOfType ) works like getfield(varOfType, symFieldOfType)
+@getfield( varOfType, symfieldOfType ) works like getfield(varOfType, symfieldOfType)
 """
-macro getfield( varOfType, symFieldOfType)
-    esc( :( getfield( ($varOfType), ($symFieldOfType) )) )
+macro getfield( varOfType, symfieldOfType)
+    esc( :( getfield( ($varOfType), ($symfieldOfType) )) )
 end
 
 """
@@ -97,12 +97,12 @@ macro fieldvalues( varOfType )
 end
 
 """
-@fieldvalues( varOfType, nFields ) yields the values of the first nFields declared in Type (in order)
+@fieldvalues( varOfType, nfields ) yields the values of the first nfields declared in Type (in order)
 """
-macro fieldvalues( varOfType, nFields )
+macro fieldvalues( varOfType, nfields )
     return quote
         local allvals = @fieldvalues( $varOfType )
-        local vals = allvals[1:$nFields]
+        local vals = allvals[1:$nfields]
         vals
     end
 end    
@@ -120,7 +120,7 @@ end
 
 
 doc"""
-@delegate_oneField(sourceType, sourceField, targetedFuncs)
+@delegate_onefield(sourceType, sourcefield, targetedFuncs)
 This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: string, show
@@ -129,7 +129,7 @@ This returns a value of same types as the `targetedFuncs` result types.
       value::Int16
     end
 
-    @delegate_oneField( MyInt16, value, [string, show]);
+    @delegate_onefield( MyInt16, value, [string, show]);
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -137,9 +137,9 @@ This returns a value of same types as the `targetedFuncs` result types.
     string(three) == "3"           # true
     show(seven)                    # 7
 """
-macro delegate_oneField(sourceType, sourceField, targetedFuncs)
+macro delegate_onefield(sourceType, sourcefield, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  fieldname  = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourcefield))
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -155,7 +155,7 @@ end
 
 
 doc"""
-@delegate_oneField_fromTwoVars(sourceType, sourceField, targetedFuncs)
+@delegate_onefield_twovars(sourceType, sourcefield, targetedFuncs)
 This returns a value of same types as the `targetedOps` result types.
 
 A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
@@ -166,7 +166,7 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
       value::Int16  
     end;
 
-    @delegate_oneField_fromTwoVars( MyInt16, value, [ (<), (<=) ] );
+    @delegate_onefield_twovars( MyInt16, value, [ (<), (<=) ] );
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -174,9 +174,9 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
     three <  seven                 # true
     seven <= three                 # false
 """
-macro delegate_oneField_fromTwoVars(sourceType, sourceField, targetedFuncs)
+macro delegate_onefield_twovars(sourceType, sourcefield, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  fieldname  = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourcefield))
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -199,7 +199,7 @@ end
 
 
 doc"""
-@delegate_oneField_asType(sourceType, sourceField, targetedOps)
+@delegate_onefield_astype(sourceType, sourcefield, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: abs, (-)
@@ -208,7 +208,7 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
       value::Int16
     end
 
-    @delegate_oneField_asType( MyInt16, value, [abs, (-)]);
+    @delegate_onefield_astype( MyInt16, value, [abs, (-)]);
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -217,9 +217,9 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
     -(seven) === MyInt16(-7)       # true
 
 """
-macro delegate_oneField_asType(sourceType, sourceField, targetedOps)
+macro delegate_onefield_astype(sourceType, sourcefield, targetedOps)
   typesname  = esc( :($sourceType) )
-  fieldname  = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourcefield))
   funcnames  = targetedOps.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -235,7 +235,7 @@ end
 
 
 doc"""
-@delegate_oneField_fromTwoVars_asType(sourceType, sourceField, targetedOps)
+@delegate_onefield_twovars_astype(sourceType, sourcefield, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: (+), (-), (*)
@@ -244,7 +244,7 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
       value::Int16
     end
 
-    @delegate_oneField_fromTwoVars_asType( MyInt16, value, [ (+), (*) ] );
+    @delegate_onefield_twovars_astype( MyInt16, value, [ (+), (*) ] );
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -253,9 +253,9 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
     three * seven == MyInt16(3*7)  # true
 
 """
-macro delegate_oneField_fromTwoVars_asType(sourceType, sourceField, targetedOps)
+macro delegate_onefield_twovars_astype(sourceType, sourcefield, targetedOps)
   typesname  = esc( :($sourceType) )
-  fieldname  = esc(Expr(:quote, sourceField))
+  fieldname  = esc(Expr(:quote, sourcefield))
   funcnames  = targetedOps.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -282,7 +282,7 @@ end
 =#
 
 doc"""
-@delegate_twoFields(sourceType, firstField, secondField, targetedFuncs)
+@delegate_twofields(sourceType, firstfield, secondfield, targetedFuncs)
 This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: hypot
@@ -292,16 +292,16 @@ This returns a value of same types as the `targetedFuncs` result types.
       legB::Float64  
     end;
 
-    @delegate_twoFields( RightTriangle, legA, legB, [ hypot, ] );
+    @delegate_twofields( RightTriangle, legA, legB, [ hypot, ] );
   
     myRightTriangle  = RightTriangle( 3.0, 4.0 );
     hypot(myRightTriangle)   #  5.0
 
 """     
-macro delegate_twoFields(sourceType, firstField, secondField, targetedFuncs)
+macro delegate_twofields(sourceType, firstfield, secondfield, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -321,7 +321,7 @@ end
 =#
 
 doc"""
-@delegate_twoFields_asType(sourceType, firstField, secondField, targetedOps)
+@delegate_twofields_astype(sourceType, firstfield, secondfield, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     function renormalize(a::Float64, b::Float64)
@@ -336,16 +336,16 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
       lo::Float64   
     end;
     
-    @delegate_twoFields_asType( HiLo, hi, lo, [ renormalize, ] );
+    @delegate_twofields_astype( HiLo, hi, lo, [ renormalize, ] );
 
     myHiLo = renormalize( HiLo(12.555555555, 8000.333333333) ); 
     showall(myHiLo)     # HiLo(8012.888888888,4.440892098500626e-14)
 
 """
-macro delegate_twoFields_asType(sourceType, firstField, secondField, targetedOps)
+macro delegate_twofields_astype(sourceType, firstfield, secondfield, targetedOps)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
   funcnames  = targetedOps.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -361,13 +361,13 @@ end
 
 
 doc"""
-@delegate_twoFields_fromTwoVars(sourceType, firstField, secondField, targetedFuncs)
+@delegate_twofields_twovars(sourceType, firstfield, secondfield, targetedFuncs)
 This returns a value of same types as the `targetedFuncs` result types.
 
 A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
   that evalutes two fields of `TheType` from arg1 and also from arg2.
-      result = targetedFunc( arg1.firstField, arg1.secondField,  
-                             arg2.firstField, arg2.secondField )
+      result = targetedFunc( arg1.firstfield, arg1.secondfield,  
+                             arg2.firstfield, arg2.secondfield )
 
     import Base: mean
 
@@ -384,7 +384,7 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
     MyInterval{T<:AbstractFloat}(lo::T, hi::T) =
         MyInterval( Float64(lo), Float64(hi) )
 
-    @delegate_twoFields_fromTwoVars( MyInterval, lo, hi, [ mean, ])
+    @delegate_twofields_twovars( MyInterval, lo, hi, [ mean, ])
 
     function mean( x::MyInterval )
         return x.lo * 0.5 + x.hi * 0.5
@@ -398,10 +398,10 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
     mean( one_three, two_four ) == 2.5 # true
 """
-macro delegate_twoFields_fromTwoVars(sourceType, firstField, secondField, targetedFuncs)
+macro delegate_twofields_twovars(sourceType, firstfield, secondfield, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -419,7 +419,7 @@ end
 
 
 doc"""
-@delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedOps)
+@delegate_twofields_twovars_astype(sourceType, firstfield, secondfield, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
 A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
@@ -427,8 +427,8 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
   and applies itself over them, obtaining field_values for constructive
   generation of the result; a new realization of TheType( field_values... ).
 
-      TheType( targetedFunc( arg1.firstField, arg1.secondField,  
-                             arg2.firstField, arg2.secondField )... )
+      TheType( targetedFunc( arg1.firstfield, arg1.secondfield,  
+                             arg2.firstfield, arg2.secondfield )... )
 
     import Base: union, intersect
 
@@ -445,7 +445,7 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
     MyInterval{T<:AbstractFloat}(lo::T, hi::T) =
         MyInterval( Float64(lo), Float64(hi) )
 
-    @delegate_twoFields_fromTwoVars_asType( MyInterval, lo, hi, [ union, ])
+    @delegate_twofields_twovars_astype( MyInterval, lo, hi, [ union, ])
 
     function union{T<:MyInterval}( a::T, b::T )
         lo = min( a.lo, b.lo )
@@ -458,10 +458,10 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
     union( one_three, two_four ) == MyInterval(1, 4) # true
 """
-macro delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedOps)
+macro delegate_twofields_twovars_astype(sourceType, firstfield, secondfield, targetedOps)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
   funcnames  = targetedOps.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -488,7 +488,7 @@ end
 =#
 
 doc"""
-@delegate_threeFields(sourceType, firstField, secondField, targetedFuncs)
+@delegate_threefields(sourceType, firstfield, secondfield, targetedFuncs)
 This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: norm 
@@ -501,17 +501,17 @@ This returns a value of same types as the `targetedFuncs` result types.
       z::Float64
     end;
 
-    @delegate_threeFields( XYZ, x, y, z, [ norm, ] );
+    @delegate_threefields( XYZ, x, y, z, [ norm, ] );
   
     pointA  = XYZ( 3.0, 4.0, 5.0 );
     norm(pointA)   #  7.0710678+
 
 """     
-macro delegate_threeFields(sourceType, firstField, secondField, thirdField, targetedFuncs)
+macro delegate_threefields(sourceType, firstfield, secondfield, thirdfield, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
-  field3name = esc(Expr(:quote, thirdField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
+  field3name = esc(Expr(:quote, thirdfield))
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -533,7 +533,7 @@ end
 =#
 
 doc"""
-@delegate_threeFields_asType(sourceType, firstField, secondField, targetedOps)
+@delegate_threefields_astype(sourceType, firstfield, secondfield, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: normalize
@@ -546,16 +546,16 @@ This returns a value of the same type as the `sourceType` by rewrapping the resu
       z::Float64
     end;
 
-    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
+    @delegate_threefields_astype( XYZ, x, y, z, [ normalize, ] );
     
     pointA  = XYZ( 3.0, 4.0, 5.0 );
     normalize(pointA)   #  XYZ( 0.424264+, 0.565685+, 0.707107- )
 """
-macro delegate_threeFields_asType(sourceType, firstField, secondField, thirdField, targetedOps)
+macro delegate_threefields_astype(sourceType, firstfield, secondfield, thirdfield, targetedOps)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
-  field3name = esc(Expr(:quote, thirdField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
+  field3name = esc(Expr(:quote, thirdfield))
   funcnames  = targetedOps.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -573,13 +573,13 @@ end
 
 
 doc"""
-@delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thirdField, targetedFuncs)
+@delegate_threefields_twovars(sourceType, firstfield, secondfield, thirdfield, targetedFuncs)
 This returns a value of same types as the `targetedFuncs` result types.
 
 A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
   that evalutes three fields of `TheType` from arg1 and also from arg2.
-      result = targetedFunc( arg1.firstField, arg1.secondField, arg1.thirdField,  
-                             arg2.firstField, arg2.secondField, arg2.thirdField )
+      result = targetedFunc( arg1.firstfield, arg1.secondfield, arg1.thirdfield,  
+                             arg2.firstfield, arg2.secondfield, arg2.thirdfield )
 
     import Base: norm, normalize, cross, sin
 
@@ -595,8 +595,8 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
     end;
 
 
-    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
-    @delegate_threeFields_fromTwoVars( XYZ, x, y, z, [ cross, ] );
+    @delegate_threefields_astype( XYZ, x, y, z, [ normalize, ] );
+    @delegate_threefields_twovars( XYZ, x, y, z, [ cross, ] );
 
     function sin( pointA::XYZ, pointB::XYZ )
         norm( cross( normalize(pointA), normalize(pointB) ) )
@@ -607,11 +607,11 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
     sin(pointA, pointB) #  0.391918+
 """
-macro delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thirdField, targetedFuncs)
+macro delegate_threefields_twovars(sourceType, firstfield, secondfield, thirdfield, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
-  field3name = esc(Expr(:quote, thirdField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
+  field3name = esc(Expr(:quote, thirdfield))
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -629,7 +629,7 @@ end
 
 
 doc"""
-@delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondField, thirdField, targetedOps)
+@delegate_threefields_twovars_astype(sourceType, firstfield, secondfield, thirdfield, targetedOps)
 This returns a value of the same type as the `sourceType` by rewrapping the result.
 
 A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)    
@@ -637,8 +637,8 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
   and applies itself over them, obtaining field_values for constructive
   generation of the result; a new realization of TheType( field_values... ).
 
-      TheType( targetedFunc( arg1.firstField, arg1.secondField, arg1.thirdField, 
-                             arg2.firstField, arg2.secondField, arg2.thirdField )... )
+      TheType( targetedFunc( arg1.firstfield, arg1.secondfield, arg1.thirdfield, 
+                             arg2.firstfield, arg2.secondfield, arg2.thirdfield )... )
 
 
     import Base: cross
@@ -653,7 +653,7 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
     end;
 
 
-    @delegate_threeFields_fromTwoVars_asType( XYZ, x, y, z, [ cross, ] );
+    @delegate_threefields_twovars_astype( XYZ, x, y, z, [ cross, ] );
 
     
     pointA  = XYZ( 3.0, 4.0, 5.0 );
@@ -661,11 +661,11 @@ A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
 
     cross(pointA, pointB) #  XYZ(-8.0, 16.0, -8.0)
 """
-macro delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondField,  thirdField, targetedOps)
+macro delegate_threefields_twovars_astype(sourceType, firstfield, secondfield,  thirdfield, targetedOps)
   typesname  = esc( :($sourceType) )
-  field1name = esc(Expr(:quote, firstField))
-  field2name = esc(Expr(:quote, secondField))
-  field3name = esc(Expr(:quote, thirdField))
+  field1name = esc(Expr(:quote, firstfield))
+  field2name = esc(Expr(:quote, secondfield))
+  field3name = esc(Expr(:quote, thirdfield))
   funcnames  = targetedOps.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
