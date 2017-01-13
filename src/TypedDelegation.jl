@@ -110,9 +110,10 @@ end
 #=
 »      delegation using the type itself
 =#
-macro delegate_type(sourceType, targetType, targetedFuncs)
+
+macro delegate_type(sourceType, usedType, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  targetname = esc( :($targetType) )
+  targetname = esc( :($usedType) )
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -126,9 +127,9 @@ macro delegate_type(sourceType, targetType, targetedFuncs)
   return Expr(:block, fdefs...)
 end
 
-macro delegate_type_astype(sourceType, targetType, targetedFuncs)
+macro delegate_type_astype(sourceType, usedType, targetedFuncs)
   typesname  = esc( :($sourceType) )
-  targetname = esc( :($targetType) )
+  targetname = esc( :($usedType) )
   funcnames  = targetedFuncs.args
   nfuncs = length(funcnames)
   fdefs = Array(Expr, nfuncs)
@@ -141,6 +142,7 @@ macro delegate_type_astype(sourceType, targetType, targetedFuncs)
     end
   return Expr(:block, fdefs...)
 end
+
 
 
 
