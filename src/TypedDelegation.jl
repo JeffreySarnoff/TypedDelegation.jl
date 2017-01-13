@@ -108,6 +108,27 @@ macro fieldvalues( varOfType, nfields )
 end    
         
 
+#=
+»      delegation using the type itself
+=#
+macro delegate_type_astype(sourceType, targetType, targetedFuncs)
+  typesname  = esc( :($sourceType) )
+  typetarget = esc( :($targetType) )
+  funcnames  = targetedFuncs.args
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(::Type{{}{  ($typesname), args...) = 
+                   ($funcname)(getfield(a,($fieldname)), args...)
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+
 
 #=
 »      delegation using one field of a type   
