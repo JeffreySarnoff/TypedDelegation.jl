@@ -10,7 +10,7 @@ and macros that delegate operations through fields to return a value of the same
         @delegate_twofields,                  #     apply functions over fields   
         @delegate_twofields_twovars,          #          (return type from func)    
         @delegate_twofields_astype,           #     and reobtain the same type   
-        @delegate_twofields_twovars_astype    #          (return type from args)   
+        @delegate_twofields_twovars_astype,   #          (return type from args)   
                                               #
         @delegate_threefields,                #     apply functions over fields
         @delegate_threefields_twovars,        #          (return type from func) 
@@ -28,7 +28,7 @@ export  @delegate_type, @delegate_type_astype,
         @delegate_twofields,                  #     apply functions over fields   
         @delegate_twofields_twovars,          #          (return type from func)    
         @delegate_twofields_astype,           #     and reobtain the same type   
-        @delegate_twofields_twovars_astype    #          (return type from args)   
+        @delegate_twofields_twovars_astype,   #          (return type from args)   
                                               #
         @delegate_threefields,                #     apply functions over fields
         @delegate_threefields_twovars,        #          (return type from func) 
