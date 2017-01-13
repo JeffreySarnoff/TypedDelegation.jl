@@ -1,6 +1,6 @@
 ## TypedDelegation.jl
 
-#### Use a Type's fields as operands for the type's operations. Apply functions onto fields' values.  Easily.<
+#### Use a Type's fields as operands for the type's operations. Apply functions onto fields' values.  Easily.
 
 ##### Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.  
 
@@ -28,33 +28,32 @@ and macros that delegate operations through fields to return a value of the same
         #     apply functions through a given Type T, using one field as a parameter
         #
         #           evaluates as the type that the function returns
-        @delegate_oneField,                       #  fn(x::T)
-        @delegate_oneField_fromTwoVars,           #  fn(x::T, y::T)
+        @delegate_onefield,                   #  fn(x::T)
+        @delegate_onefield_twovars,           #  fn(x::T, y::T)
         #
         #           evaluates as the type that is used in delegation
-        @delegate_oneField_asType,                #  op(x::T)::T
-        @delegate_oneField_fromTwoVars_asType,    #  op(x::T, y::T)::T
-                                                  #
+        @delegate_onefield_astype,            #  op(x::T)::T
+        @delegate_onefield_twovars_astype,    #  op(x::T, y::T)::T
+        #
         #     apply functions through a given Type, using two fields as parameters
         #
         #           evaluates as the type that the function returns
-        @delegate_twoFields,                      #  fn(x::T)
-        @delegate_twoFields_fromTwoVars,          #  fn(x::T, y::T)
+        @delegate_twofields,                  #  fn(x::T)
+        @delegate_twofields_twovars,          #  fn(x::T, y::T)
         #
         #           evaluates as the type that is used in delegation
-        @delegate_twoFields_asType,               #  op(x::T)::T
-        @delegate_twoFields_fromTwoVars_asType    #  op(x::T, y::T)::T
-
-                                                  #
+        @delegate_twofields_astype,           #  op(x::T)::T
+        @delegate_twofields_twovars_astype    #  op(x::T, y::T)::T
+        #
         #     apply functions through a given Type, using three fields as parameters
         #
         #           evaluates as the type that the function returns
-        @delegate_threeFields,                    #  fn(x::T)
-        @delegate_threeFields_fromTwoVars,        #  fn(x::T, y::T)
+        @delegate_threefields,                #  fn(x::T)
+        @delegate_threefields_twovars,        #  fn(x::T, y::T)
         #
         #           evaluates as the type that is used in delegation
-        @delegate_threeFields_asType,             #  op(x::T)::T
-        @delegate_threeFields_fromTwoVars_asType  #  op(x::T, y::T)::T
+        @delegate_threefields_astype,         #  op(x::T)::T
+        @delegate_threefields_twovars_astype  #  op(x::T, y::T)::T
 ```
 
 
@@ -72,7 +71,7 @@ using TypedDelegation
 
 
 ```julia
-# @delegate_oneField(sourceType, sourceField, targetedFuncs)
+# @delegate_onefield(sourceType, sourcefield, targetedFuncs)
 # This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: string, show
@@ -81,7 +80,7 @@ using TypedDelegation
       value::Int16
     end
 
-    @delegate_oneField( MyInt16, value, [string, show]);
+    @delegate_onefield( MyInt16, value, [string, show]);
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -93,7 +92,7 @@ using TypedDelegation
    
    
 ```julia
-# @delegate_oneField_fromTwoVars(sourceType, sourceField, targetedOps)
+# @delegate_onefield_twovars(sourceType, sourcefield, targetedOps)
 # This returns a value of same types as the `targetedOps` result types.
 #
 # A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
@@ -104,7 +103,7 @@ using TypedDelegation
       value::Int16  
     end;
 
-    @delegate_oneField_fromTwoVars( MyInt16, value, [ (<), (<=) ] );
+    @delegate_onefield_twovars( MyInt16, value, [ (<), (<=) ] );
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -116,7 +115,7 @@ using TypedDelegation
    
    
 ```julia
-# @delegate_oneField_asType(sourceType, sourceField, targetedFuncs)
+# @delegate_onefield_astype(sourceType, sourcefield, targetedFuncs)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: abs, (-)
@@ -125,7 +124,7 @@ using TypedDelegation
       value::Int16
     end
 
-    @delegate_oneField_asType( MyInt16, value, [abs, (-)]);
+    @delegate_onefield_astype( MyInt16, value, [abs, (-)]);
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -137,7 +136,7 @@ using TypedDelegation
    
    
 ```julia
-# @delegate_oneField_fromTwoVars_asType(sourceType, sourceField, targetedOps)
+# @delegate_onefield_twovars_astype(sourceType, sourcefield, targetedOps)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: (+), (-), (*)
@@ -146,7 +145,7 @@ using TypedDelegation
       value::Int16
     end
 
-    @delegate_oneField_fromTwoVars_asType( MyInt16, value, [ (+), (*) ] );
+    @delegate_onefield_twovars_astype( MyInt16, value, [ (+), (*) ] );
 
     three = MyInt16(3);
     seven = MyInt16(7);
@@ -159,7 +158,7 @@ using TypedDelegation
    
    
 ```
-# @delegate_twoFields(sourceType, firstField, secondField, targetedFuncs)
+# @delegate_twofields(sourceType, firstfield, secondfield, targetedFuncs)
 # This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: hypot
@@ -169,7 +168,7 @@ using TypedDelegation
       legB::Float64;  
     end;
 
-    @delegate_twoFields( RightTriangle, legA, legB, [ hypot, ] );
+    @delegate_twofields( RightTriangle, legA, legB, [ hypot, ] );
   
     myRightTriangle  = RightTriangle( 3.0, 4.0 );
     hypot(myRightTriangle)   #  5.0
@@ -178,7 +177,7 @@ using TypedDelegation
    
    
 ```
-# @@delegate_twoFields_asType(sourceType, firstField, secondField, targetedOps)
+# @@delegate_twofields_astype(sourceType, firstfield, secondfield, targetedOps)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     function renormalize(a::Float64, b::Float64)
@@ -193,7 +192,7 @@ using TypedDelegation
       lo::Float64;   
     end;
     
-    @delegate_twoFields_asType( HiLo, hi, lo, [ renormalize, ] );
+    @delegate_twofields_astype( HiLo, hi, lo, [ renormalize, ] );
 
     myHiLo = renormalize( HiLo(12.555555555, 8000.333333333) ); 
     showall(myHiLo)     # HiLo(8012.888888888,4.440892098500626e-14)
@@ -201,7 +200,7 @@ using TypedDelegation
 
 
 ```julia
-# @delegate_twoFields_fromTwoVars(sourceType, firstField, secondField, targetedFuncs)
+# @delegate_twofields_twovars(sourceType, firstfield, secondfield, targetedFuncs)
 # This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: mean
@@ -219,7 +218,7 @@ using TypedDelegation
     MyInterval{T<:AbstractFloat}(lo::T, hi::T) =
         MyInterval( Float64(lo), Float64(hi) )
 
-    @delegate_twoFields_fromTwoVars( MyInterval, lo, hi, [ mean, ])
+    @delegate_twofields_twovars( MyInterval, lo, hi, [ mean, ])
 
     function mean( x::MyInterval )
         return x.lo * 0.5 + x.hi * 0.5
@@ -235,7 +234,7 @@ using TypedDelegation
 ```
 
 ```julia
-# @delegate_twoFields_fromTwoVars_asType(sourceType, firstField, secondField, targetedOps)
+# @delegate_twofields_twovars_astype(sourceType, firstfield, secondfield, targetedOps)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: union, intersect
@@ -253,7 +252,7 @@ using TypedDelegation
     MyInterval{T<:AbstractFloat}(lo::T, hi::T) =
         MyInterval( Float64(lo), Float64(hi) )
 
-    @delegate_twoFields_fromTwoVars_asType( MyInterval, lo, hi, [ union, ])
+    @delegate_twofields_twovars_astype( MyInterval, lo, hi, [ union, ])
 
     function union{T<:MyInterval}( a::T, b::T )
         lo = min( a.lo, b.lo )
@@ -271,7 +270,7 @@ using TypedDelegation
 
    
 ```
-# @delegate_threeFields(sourceType, firstField, secondField, thirdField, targetedFuncs)
+# @delegate_threefields(sourceType, firstfield, secondfield, thirdfield, targetedFuncs)
 # This returns a value of same types as the `targetedFuncs` result types.
 
 
@@ -285,7 +284,7 @@ using TypedDelegation
       z::Float64
     end;
     
-    @delegate_threeFields( XYZ, x, y, z, [ norm, ] );
+    @delegate_threefields( XYZ, x, y, z, [ norm, ] );
   
     pointA  = XYZ( 3.0, 4.0, 5.0 );
     
@@ -295,7 +294,7 @@ using TypedDelegation
    
    
 ```
-# @@delegate_threeFields_asType(sourceType, firstField, secondField, targetedOps)
+# @@delegate_threefields_astype(sourceType, firstfield, secondfield, targetedOps)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: normalize
@@ -308,7 +307,7 @@ using TypedDelegation
       z::Float64
     end;
     
-    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
+    @delegate_threefields_astype( XYZ, x, y, z, [ normalize, ] );
     
     pointA  = XYZ( 3.0, 4.0, 5.0 );
     
@@ -317,7 +316,7 @@ using TypedDelegation
 
 
 ```julia
-# @delegate_threeFields_fromTwoVars(sourceType, firstField, secondField, thirdField, targetedFuncs)
+# @delegate_threefields_twovars(sourceType, firstfield, secondfield, thirdfield, targetedFuncs)
 # This returns a value of same types as the `targetedFuncs` result types.
 
     import Base: norm, normalize, cross, sin
@@ -331,8 +330,8 @@ using TypedDelegation
       z::Float64
     end;
     
-    @delegate_threeFields_asType( XYZ, x, y, z, [ normalize, ] );
-    @delegate_threeFields_fromTwoVars( XYZ, x, y, z, [ cross, ] );
+    @delegate_threefields_astype( XYZ, x, y, z, [ normalize, ] );
+    @delegate_threefields_twovars( XYZ, x, y, z, [ cross, ] );
     
     function sin( pointA::XYZ, pointB::XYZ )
         norm( cross( normalize(pointA), normalize(pointB) ) )
@@ -345,7 +344,7 @@ using TypedDelegation
 ```
 
 ```julia
-# @delegate_threeFields_fromTwoVars_asType(sourceType, firstField, secondField, thirdField, targetedOps)
+# @delegate_threefields_twovars_astype(sourceType, firstfield, secondfield, thirdfield, targetedOps)
 # This returns a value of the same type as the `sourceType` by rewrapping the result.
 
     import Base: cross
@@ -358,7 +357,7 @@ using TypedDelegation
       z::Float64
     end;
     
-    @delegate_threeFields_fromTwoVars_asType( XYZ, x, y, z, [ cross, ] );
+    @delegate_threefields_twovars_astype( XYZ, x, y, z, [ cross, ] );
     
     pointA  = XYZ( 3.0, 4.0, 5.0 );
     pointB  = XYZ( 5.0, 4.0, 3.0 );
@@ -385,4 +384,3 @@ This derives directly from work by John Myles White and Toivo Henningsson.
  
 - additional macro text from  
 --   (https://github.com/JuliaLang/DataStructures.jl/blob/master/src/delegate.jl)
-
