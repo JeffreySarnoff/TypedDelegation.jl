@@ -4,37 +4,37 @@ and macros that delegate operations through fields to return a value of the same
 
 **exports**
 
-        @delegate_onefield,                       #     apply functions over field   
+        @delegate_onefield,                   #     apply functions over field   
         @delegate_onefield_twovars,           #          (return type from func)    
-        @delegate_onefield_astype,                #     and reobtain the same type   
+        @delegate_onefield_astype,            #     and reobtain the same type   
         @delegate_onefield_twovars_astype,    #          (return type from args)   
-                                                  #
-        @delegate_twofields,                      #     apply functions over fields   
+                                              #
+        @delegate_twofields,                  #     apply functions over fields   
         @delegate_twofields_twovars,          #          (return type from func)    
-        @delegate_twofields_astype,               #     and reobtain the same type   
+        @delegate_twofields_astype,           #     and reobtain the same type   
         @delegate_twofields_twovars_astype    #          (return type from args)   
-                                                  #
-        @delegate_threefields,                    #     apply functions over fields
+                                              #
+        @delegate_threefields,                #     apply functions over fields
         @delegate_threefields_twovars,        #          (return type from func) 
-        @delegate_threefields_astype,             #     and reobtain the same type
+        @delegate_threefields_astype,         #     and reobtain the same type
         @delegate_threefields_twovars_astype  #          (return type from args)
 """
 module TypedDelegation
 
-export @delegate_onefield,                       #     apply functions over field
-       @delegate_onefield_twovars,           #          (return type from func) 
-       @delegate_onefield_astype,                #     and reobtain the same type
-       @delegate_onefield_twovars_astype,    #          (return type from args)
-                                                 #
-       @delegate_twofields,                      #     apply functions over fields
-       @delegate_twofields_twovars,          #          (return type from func) 
-       @delegate_twofields_astype,               #     and reobtain the same type
-       @delegate_twofields_twovars_astype,   #          (return type from args)
-                                                 #
-       @delegate_threefields,                    #     apply functions over fields
-       @delegate_threefields_twovars,        #          (return type from func) 
-       @delegate_threefields_astype,             #     and reobtain the same type
-       @delegate_threefields_twovars_astype  #          (return type from args)
+export  @delegate_onefield,                   #     apply functions over field   
+        @delegate_onefield_twovars,           #          (return type from func)    
+        @delegate_onefield_astype,            #     and reobtain the same type   
+        @delegate_onefield_twovars_astype,    #          (return type from args)   
+                                              #
+        @delegate_twofields,                  #     apply functions over fields   
+        @delegate_twofields_twovars,          #          (return type from func)    
+        @delegate_twofields_astype,           #     and reobtain the same type   
+        @delegate_twofields_twovars_astype    #          (return type from args)   
+                                              #
+        @delegate_threefields,                #     apply functions over fields
+        @delegate_threefields_twovars,        #          (return type from func) 
+        @delegate_threefields_astype,         #     and reobtain the same type
+        @delegate_threefields_twovars_astype  #          (return type from args)
 
 
 #=
