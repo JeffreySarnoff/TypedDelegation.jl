@@ -9,10 +9,10 @@ immutable MyInt16
     value::Int16
 end
 
-@delegate_oneField( MyInt16, value, [ string ]);
-@delegate_oneField_fromTwoVars( MyInt16, value, [ (==), (!=), (<), (<=), (>=), (>) ] );
-@delegate_oneField_asType( MyInt16, value, [ abs, (-) ]); # unary minus
-@delegate_oneField_fromTwoVars_asType( MyInt16, value, [ (+), (-), (*), div, fld, cld ] );
+@delegate_onefield( MyInt16, value, [ string ]);
+@delegate_onefield_twovars( MyInt16, value, [ (==), (!=), (<), (<=), (>=), (>) ] );
+@delegate_onefield_astype( MyInt16, value, [ abs, (-) ]); # unary minus
+@delegate_onefield_twovars_astype( MyInt16, value, [ (+), (-), (*), div, fld, cld ] );
 
 # values to be used in testing
 three = MyInt16(3);
