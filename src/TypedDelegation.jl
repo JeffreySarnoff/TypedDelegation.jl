@@ -4,8 +4,10 @@ and macros that delegate operations through fields to return a value of the same
 **exports**
         @delegate_onefield,                   #     apply functions over field   
         @delegate_onefield_twovars,           #          (return type from func)    
+        @delegate_onefield_threevars,         #          (return type from func)    
         @delegate_onefield_astype,            #     and reobtain the same type   
-        @delegate_onefield_twovars_astype,    #          (return type from args)   
+        @delegate_onefield_twovars_astype,    #          (return type from arg)   
+        @delegate_onefield_threevars_astype,  #          (return type from arg)    
                                               #
         @delegate_twofields,                  #     apply functions over fields   
         @delegate_twofields_twovars,          #          (return type from func)    
@@ -22,8 +24,10 @@ module TypedDelegation
 export  @delegate_type, @delegate_type_astype,
         @delegate_onefield,                   #     apply functions over field   
         @delegate_onefield_twovars,           #          (return type from func)    
+        @delegate_onefield_threevars,         #          (return type from func)    
         @delegate_onefield_astype,            #     and reobtain the same type   
-        @delegate_onefield_twovars_astype,    #          (return type from args)   
+        @delegate_onefield_twovars_astype,    #          (return type from arg)   
+        @delegate_onefield_threevars_astype,  #          (return type from arg)    
                                               #
         @delegate_twofields,                  #     apply functions over fields   
         @delegate_twofields_twovars,          #          (return type from func)    
@@ -218,7 +222,26 @@ macro delegate_onefield_twovars(sourceType, sourcefield, targetedFuncs)
   return Expr(:block, fdefs...)
 end
 
-
+doc"""
+@delegate_onefield_threevars(sourceType, sourcefield, targetedFuncs)
+"""
+macro delegate_onefield_threevars(sourceType, sourcefield, targetedFuncs)
+  typesname  = esc( :($sourceType) )
+  fieldname  = esc(Expr(:quote, sourcefield))
+  funcnames  = targetedFuncs.args
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), b::($typesname), c::($typesname), args...) =
+                   ($funcname)(getfield(a,($fieldname)),
+                               getfield(b,($fieldname)),
+                               getfield(c,($fieldname)), args...)
+               end
+    end
+  return Expr(:block, fdefs...)
+end
 
 #=
 »       versions for use when the result has the same type as the params
@@ -285,6 +308,26 @@ macro delegate_onefield_twovars_astype(sourceType, sourcefield, targetedOps)
   return Expr(:block, fdefs...)
 end
 
+doc"""
+@delegate_onefield_threevars_astype(sourceType, sourcefield, targetedFuncs)
+"""
+macro delegate_onefield_threevars(sourceType, sourcefield, targetedFuncs)
+  typesname  = esc( :($sourceType) )
+  fieldname  = esc(Expr(:quote, sourcefield))
+  funcnames  = targetedFuncs.args
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), b::($typesname), c::($typesname), args...) =
+                   ($typesname)( ($funcname)(getfield(a,($fieldname)),
+                                             getfield(b,($fieldname)),
+                                             getfield(c,($fieldname)), args...) )
+               end
+    end
+  return Expr(:block, fdefs...)
+end
 
 
 #=
