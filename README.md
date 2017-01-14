@@ -30,10 +30,12 @@ and macros that delegate operations through fields to return a value of the same
         #           evaluates as the type that the function returns
         @delegate_onefield,                   #  fn(x::T)
         @delegate_onefield_twovars,           #  fn(x::T, y::T)
+        @delegate_onefield_threevars,         #  fn(x::T, y::T, x::T)
         #
         #           evaluates as the type that is used in delegation
         @delegate_onefield_astype,            #  op(x::T)::T
         @delegate_onefield_twovars_astype,    #  op(x::T, y::T)::T
+        @delegate_onefield_threevars_astype,  #  op(x::T, y::T, x::T)::T
         #
         #     apply functions through a given Type, using two fields as parameters
         #
