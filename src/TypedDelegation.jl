@@ -311,7 +311,7 @@ end
 doc"""
 @delegate_onefield_threevars_astype(sourceType, sourcefield, targetedFuncs)
 """
-macro delegate_onefield_threevars(sourceType, sourcefield, targetedFuncs)
+macro delegate_onefield_threevars_astype(sourceType, sourcefield, targetedFuncs)
   typesname  = esc( :($sourceType) )
   fieldname  = esc(Expr(:quote, sourcefield))
   funcnames  = targetedFuncs.args
