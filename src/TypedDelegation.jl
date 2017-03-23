@@ -2,6 +2,11 @@ doc"""
 This package offers macros that delegate functions over one or more fields of a type;      
 and macros that delegate operations through fields to return a value of the same type.
 **exports**
+        @delegate1,                           #     apply functions over field   
+        @delegate2,                           #          (return type from func)    
+        @delegate1oftype,                     #     and reobtain the same type   
+        @delegate2oftype,                     #          (return type from arg)   
+
         @delegate_onefield,                   #     apply functions over field   
         @delegate_onefield_twovars,           #          (return type from func)    
         @delegate_onefield_threevars,         #          (return type from func)    
@@ -21,7 +26,12 @@ and macros that delegate operations through fields to return a value of the same
 """
 module TypedDelegation
 
-export  @delegate_type, @delegate_type_astype,
+export  @delegate1,                           #     apply functions over field   
+        @delegate2,                           #          (return type from func)    
+        @delegate1oftype,                     #     and reobtain the same type   
+        @delegate2oftype,                     #          (return type from arg)  
+
+        @delegate_type, @delegate_type_astype,
         @delegate_onefield,                   #     apply functions over field   
         @delegate_onefield_twovars,           #          (return type from func)    
         @delegate_onefield_threevars,         #          (return type from func)    
@@ -142,6 +152,131 @@ macro delegate_type_astype(sourceType, usedType, targetedFuncs)
     fdefs[i] = quote
                  ($funcname)(::Type{$typesname}) = 
                    ($typesname)( ($funcname)($targetname) )
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+
+doc"""
+@delegate1(sourceType, sourcefield, targetedFuncs)
+This returns a value of same types as the `targetedFuncs` result types.
+    import Base: string, show
+    immutable MyInt16
+      value::Int16
+    end
+    @delegate1( MyInt16, value, [string, show]);
+    three = MyInt16(3);
+    seven = MyInt16(7);
+    string(three) == "3"           # true
+    show(seven)                    # 7
+"""
+macro delegate1(sourceType, sourcefield, targetedFuncs)
+  typesname  = esc( :($sourceType) )
+  fieldname  = esc(Expr(:quote, sourcefield))
+  funcnames  = targetedFuncs.args
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), args...) = 
+                   ($funcname)(getfield(a,($fieldname)), args...)
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+doc"""
+@delegate2(sourceType, sourcefield, targetedFuncs)
+This returns a value of same types as the `targetedOps` result types.
+A macro for field delegation over a function{T<:TheType}(arg1::T, arg2::T)
+    import Base: (<), (<=)
+    immutable MyInt16  
+      value::Int16  
+    end;
+    @delegate2( MyInt16, value, [ (<), (<=) ] );
+    three = MyInt16(3);
+    seven = MyInt16(7);
+    three <  seven                 # true
+    seven <= three                 # false
+"""
+macro delegate2(sourceType, sourcefield, targetedFuncs)
+  typesname  = esc( :($sourceType) )
+  fieldname  = esc(Expr(:quote, sourcefield))
+  funcnames  = targetedFuncs.args
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), b::($typesname), args...) =
+                   ($funcname)(getfield(a,($fieldname)), 
+                               getfield(b,($fieldname)), args...)
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+
+doc"""
+@delegate1oftype(sourceType, sourcefield, targetedOps)
+This returns a value of the same type as the `sourceType` by rewrapping the result.
+    import Base: abs, (-)
+    immutable MyInt16
+      value::Int16
+    end
+    @delegate1oftype( MyInt16, value, [abs, (-)]);
+    three = MyInt16(3);
+    seven = MyInt16(7);
+    abs(three) == three            # true
+    -(seven) === MyInt16(-7)       # true
+"""
+macro delegate1oftype(sourceType, sourcefield, targetedOps)
+  typesname  = esc( :($sourceType) )
+  fieldname  = esc(Expr(:quote, sourcefield))
+  funcnames  = targetedOps.args
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), args...) =
+                   ($typesname)( ($funcname)(getfield(a,($fieldname)), args...) )
+               end
+    end
+  return Expr(:block, fdefs...)
+end
+
+
+doc"""
+@delegate2oftype(sourceType, sourcefield, targetedOps)
+This returns a value of the same type as the `sourceType` by rewrapping the result.
+    import Base: (+), (-), (*)
+    type 
+      value::Int16
+    end
+    @delegate2oftype( MyInt16, value, [ (+), (*) ] );
+    three = MyInt16(3);
+    seven = MyInt16(7);
+    three + seven == MyInt16(3+7)  # true
+    three * seven == MyInt16(3*7)  # true
+"""
+macro delegate2oftype(sourceType, sourcefield, targetedOps)
+  typesname  = esc( :($sourceType) )
+  fieldname  = esc(Expr(:quote, sourcefield))
+  funcnames  = targetedOps.args
+  nfuncs = length(funcnames)
+  fdefs = Array(Expr, nfuncs)
+  for i in 1:nfuncs
+    funcname = esc(funcnames[i])
+    fdefs[i] = quote
+                 ($funcname)(a::($typesname), b::($typesname), args...) =
+                   ($typesname)( ($funcname)(getfield(a,($fieldname)), 
+                                             getfield(b,($fieldname)), args...) )
                end
     end
   return Expr(:block, fdefs...)
