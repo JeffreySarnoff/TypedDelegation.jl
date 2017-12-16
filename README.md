@@ -1,10 +1,8 @@
 ## TypedDelegation.jl
 
-###  planned obselence *revoked!*; again ready for use.
+### Use a Type's fields as operands for the type's operations. Easily apply functions onto fields.
 
-#### Use a Type's fields as operands for the type's operations. Easily apply functions onto fields.
-
-##### Copyright © 2016 by Jeffrey Sarnoff.  Released under the MIT License.  
+##### Copyright © 2016-2017 by Jeffrey Sarnoff.  Released under the MIT License.  
 
 ------
 
