@@ -1,6 +1,6 @@
 ## TypedDelegation.jl
 
-# OBSOLETE -- do not use!
+# planned obselence *revoked!*  (ready for use)
 
 #### Use a Type's fields as operands for the type's operations. Easily apply functions onto fields.
 
