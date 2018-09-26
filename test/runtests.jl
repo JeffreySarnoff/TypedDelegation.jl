@@ -1,11 +1,11 @@
 using TypedDelegation
-using Base.Test
+using Test
 
 import Base: string, abs, 
              (+), (-), (*), div, fld, cld,
              (==), (!=), (<), (<=), (>=), (>)
 
-immutable MyInt16
+struct MyInt16
     value::Int16
 end
 
