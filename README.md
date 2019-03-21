@@ -5,11 +5,7 @@
 ##### Copyright © 2016-2019 by Jeffrey Sarnoff.  Released under the MIT License.  
 
 ------
-
-|    |     |
-|:------:|:-----------------------------------------|
-|  _travis build status_ |  [![Build Status](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl) | 
-
+[![Build Status](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl)
 =====
 
 ### Offers
