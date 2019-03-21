@@ -78,7 +78,7 @@ using TypedDelegation
 
     import Base: string, show
 
-    immutable MyInt16
+    struct MyInt16
       value::Int16
     end
 
@@ -101,7 +101,7 @@ using TypedDelegation
 
     import Base: (<), (<=)
 
-    immutable MyInt16  
+    struct MyInt16  
       value::Int16  
     end;
 
@@ -122,7 +122,7 @@ using TypedDelegation
 
     import Base: abs, (-)
 
-    immutable MyInt16
+    struct MyInt16
       value::Int16
     end
 
@@ -143,7 +143,7 @@ using TypedDelegation
 
     import Base: (+), (-), (*)
 
-    immutable MyInt16
+    struct MyInt16
       value::Int16
     end
 
@@ -207,7 +207,7 @@ using TypedDelegation
 
     import Base: mean
 
-    type MyInterval
+    mutable struct MyInterval
       lo::Float64
       hi::Float64
     
@@ -217,7 +217,7 @@ using TypedDelegation
       end   
     end;
 
-    MyInterval{T<:AbstractFloat}(lo::T, hi::T) =
+    MyInterval(lo::T, hi::T) where {T<:AbstractFloat} =
         MyInterval( Float64(lo), Float64(hi) )
 
     @delegate_twofields_twovars( MyInterval, lo, hi, [ mean, ])
@@ -225,7 +225,7 @@ using TypedDelegation
     function mean( x::MyInterval )
         return x.lo * 0.5 + x.hi * 0.5
     end
-    function mean{T<:MyInterval}( a::T, b::T )
+    function mean( a::T, b::T ) where T<:MyInterval
         return mean( a ) * 0.5 + mean( b ) * 0.5
     end
 
@@ -241,7 +241,7 @@ using TypedDelegation
 
     import Base: union, intersect
 
-    type MyInterval
+    mutable struct MyInterval
       lo::Float64
       hi::Float64
     
@@ -251,12 +251,12 @@ using TypedDelegation
       end   
     end;
 
-    MyInterval{T<:AbstractFloat}(lo::T, hi::T) =
+    MyInterval(lo::T, hi::T) where {T<:AbstractFloat} =
         MyInterval( Float64(lo), Float64(hi) )
 
     @delegate_twofields_twovars_astype( MyInterval, lo, hi, [ union, ])
 
-    function union{T<:MyInterval}( a::T, b::T )
+    function union( a::T, b::T ) where T<:MyInterval
         lo = min( a.lo, b.lo )
         hi = max( a.hi, b.hi )
         return T( lo, hi )
@@ -323,10 +323,10 @@ using TypedDelegation
 
     import Base: norm, normalize, cross, sin
     
-    normalize{R<:Real}(xs::Vararg{R,3}) = normalize([xs...])
-    cross{R<:Real}(xs::Vararg{R,6}) = cross([xs[1:3]...], [xs[4:6]...])
+    normalize(xs::Vararg{R,3}) where {R<:Real} = normalize([xs...])
+    cross(xs::Vararg{R,6}) where {R<:Real} = cross([xs[1:3]...], [xs[4:6]...])
     
-    immutable XYZ
+    struct XYZ
       x::Float64
       y::Float64
       z::Float64
@@ -351,9 +351,9 @@ using TypedDelegation
 
     import Base: cross
     
-    cross{R<:Real}(xs::Vararg{R,6}) = cross([xs[1:3]...], [xs[4:6]...])
+    cross(xs::Vararg{R,6}) where {R<:Real} = cross([xs[1:3]...], [xs[4:6]...])
     
-    immutable XYZ
+    struct XYZ
       x::Float64
       y::Float64
       z::Float64

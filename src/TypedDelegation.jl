@@ -1,5 +1,3 @@
-__precompile__(true)
-
 """
 This package offers macros that delegate functions over one or more fields of a type;
 and macros that delegate operations through fields to return a value of the same type.
