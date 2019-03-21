@@ -1,6 +1,8 @@
 ## TypedDelegation.jl
 
-### Use a Type's fields as operands for the type's operations. Easily apply functions onto fields.
+### Easily apply functions onto fields.
+
+- Use a struct's fields as operands for operations on values of that type.
 
 ##### Copyright © 2016-2019 by Jeffrey Sarnoff.  Released under the MIT License.  
 
