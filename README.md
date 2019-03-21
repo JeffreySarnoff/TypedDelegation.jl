@@ -23,37 +23,37 @@ This package offers macros that delegate functions over one or more fields of a 
 and macros that delegate operations through fields to return a value of the same type.
 
 ```julia
-        #     apply functions through a given Type T, using one field as a parameter
+#     apply functions through a given Type T, using one field as a parameter
 
-        #           evaluates as the type that the function returns
-        @delegate_onefield,                   #  fn(x::T)
-        @delegate_onefield_twovars,           #  fn(x::T, y::T)
-        @delegate_onefield_threevars,         #  fn(x::T, y::T, x::T)
-        
-        #           evaluates as the type that is used in delegation
-        @delegate_onefield_astype,            #  op(x::T)::T
-        @delegate_onefield_twovars_astype,    #  op(x::T, y::T)::T
-        @delegate_onefield_threevars_astype,  #  op(x::T, y::T, x::T)::T
-        
-        #     apply functions through a given Type, using two fields as parameters
-        
-        #           evaluates as the type that the function returns
-        @delegate_twofields,                  #  fn(x::T)
-        @delegate_twofields_twovars,          #  fn(x::T, y::T)
-        
-        #           evaluates as the type that is used in delegation
-        @delegate_twofields_astype,           #  op(x::T)::T
-        @delegate_twofields_twovars_astype    #  op(x::T, y::T)::T
-        
-        #     apply functions through a given Type, using three fields as parameters
-        
-        #           evaluates as the type that the function returns
-        @delegate_threefields,                #  fn(x::T)
-        @delegate_threefields_twovars,        #  fn(x::T, y::T)
-        
-        #           evaluates as the type that is used in delegation
-        @delegate_threefields_astype,         #  op(x::T)::T
-        @delegate_threefields_twovars_astype  #  op(x::T, y::T)::T
+#           evaluates as the type that the function `fn` returns
+@delegate_onefield                    #  fn(x::T)
+@delegate_onefield_twovars            #  fn(x::T, y::T)
+@delegate_onefield_threevars          #  fn(x::T, y::T, x::T)
+
+#           evaluates as the type that is used in delegation
+@delegate_onefield_astype             #  op(x::T)::T
+@delegate_onefield_twovars_astype     #  op(x::T, y::T)::T
+@delegate_onefield_threevars_astype   #  op(x::T, y::T, x::T)::T
+
+#     apply functions through a given Type, using two fields as parameters
+
+#           evaluates as the type that the function `fn` returns
+@delegate_twofields                   #  fn(x::T)
+@delegate_twofields_twovars           #  fn(x::T, y::T)
+
+#           evaluates as the type that is used in delegation
+@delegate_twofields_astype            #  op(x::T)::T
+@delegate_twofields_twovars_astype    #  op(x::T, y::T)::T
+
+#     apply functions through a given Type, using three fields as parameters
+
+#           evaluates as the type that the function `fn` returns
+@delegate_threefields                 #  fn(x::T)
+@delegate_threefields_twovars         #  fn(x::T, y::T)
+
+#           evaluates as the type that is used in delegation
+@delegate_threefields_astype          #  op(x::T)::T
+@delegate_threefields_twovars_astype  #  op(x::T, y::T)::T
 ```
 
 
