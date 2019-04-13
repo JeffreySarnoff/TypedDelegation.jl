@@ -196,7 +196,7 @@ macro delegate_onefield(sourceType, sourcefield, targetedFuncs)
     fieldname  = esc(Expr(:quote, sourcefield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs*1)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
         funcname = esc(funcnames[i])
         fdefs[i] = quote
