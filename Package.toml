@@ -3,7 +3,7 @@ uuid = "bc724e2e-2423-57c2-8f10-788c81380fc8"
 repo = "https://github.com/JuliaArbTypes/TypedDelegation.jl.git"
 author = "Jeffrey Sarnoff"
 license = "MIT"
-version = "v0.3.0"
+version = "v0.4.0"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
