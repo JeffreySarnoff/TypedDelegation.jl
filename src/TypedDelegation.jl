@@ -196,13 +196,17 @@ macro delegate_onefield(sourceType, sourcefield, targetedFuncs)
     fieldname  = esc(Expr(:quote, sourcefield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*1)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), args...) =
-                   ($funcname)(getfield(a,($fieldname)), args...)
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname)) =
+                       ($funcname)(getfield(a,($fieldname)))
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), args...) =
+                       ($funcname)(getfield(a,($fieldname)), args...)
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -234,14 +238,19 @@ macro delegate_onefield_twovars(sourceType, sourcefield, targetedFuncs)
     fieldname  = esc(Expr(:quote, sourcefield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), args...) =
-                   ($funcname)(getfield(a,($fieldname)),
-                               getfield(b,($fieldname)), args...)
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname)) =
+                       ($funcname)(getfield(a,($fieldname)),
+                                   getfield(b,($fieldname)))
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), args...) =
+                       ($funcname)(getfield(a,($fieldname)),
+                                   getfield(b,($fieldname)), args...)
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -254,15 +263,21 @@ macro delegate_onefield_threevars(sourceType, sourcefield, targetedFuncs)
     fieldname  = esc(Expr(:quote, sourcefield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), c::($typesname), args...) =
-                   ($funcname)(getfield(a,($fieldname)),
-                               getfield(b,($fieldname)),
-                               getfield(c,($fieldname)), args...)
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname), c::($typesname)) =
+                       ($funcname)(getfield(a,($fieldname)),
+                                   getfield(b,($fieldname)),
+                                   getfield(c,($fieldname)))
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), c::($typesname), args...) =
+                       ($funcname)(getfield(a,($fieldname)),
+                                   getfield(b,($fieldname)),
+                                   getfield(c,($fieldname)), args...)
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -297,13 +312,17 @@ macro delegate_onefield_astype(sourceType, sourcefield, targetedOps)
     fieldname  = esc(Expr(:quote, sourcefield))
     funcnames  = targetedOps.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), args...) =
-                   ($typesname)( ($funcname)(getfield(a,($fieldname)), args...) )
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname)) =
+                       ($typesname)( ($funcname)(getfield(a,($fieldname))) )
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), args...) =
+                       ($typesname)( ($funcname)(getfield(a,($fieldname)), args...) )
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -345,14 +364,19 @@ macro delegate_onefield_twovars_astype(sourceType, sourcefield, targetedOps)
     fieldname  = esc(Expr(:quote, sourcefield))
     funcnames  = targetedOps.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), args...) =
-                   ($typesname)( ($funcname)(getfield(a,($fieldname)),
-                                             getfield(b,($fieldname)), args...) )
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname)) =
+                       ($typesname)( ($funcname)(getfield(a,($fieldname)),
+                                                 getfield(b,($fieldname))) )
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), args...) =
+                       ($typesname)( ($funcname)(getfield(a,($fieldname)),
+                                                 getfield(b,($fieldname)), args...) )
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -365,15 +389,21 @@ macro delegate_onefield_threevars_astype(sourceType, sourcefield, targetedFuncs)
     fieldname  = esc(Expr(:quote, sourcefield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), c::($typesname), args...) =
-                   ($typesname)( ($funcname)(getfield(a,($fieldname)),
-                                             getfield(b,($fieldname)),
-                                             getfield(c,($fieldname)), args...) )
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname), c::($typesname)) =
+                       ($typesname)( ($funcname)(getfield(a,($fieldname)),
+                                                 getfield(b,($fieldname)),
+                                                 getfield(c,($fieldname))) )
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), c::($typesname), args...) =
+                       ($typesname)( ($funcname)(getfield(a,($fieldname)),
+                                                 getfield(b,($fieldname)),
+                                                 getfield(c,($fieldname)), args...) )
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -417,13 +447,17 @@ macro delegate_twofields(sourceType, firstfield, secondfield, targetedFuncs)
     field2name = esc(Expr(:quote, secondfield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), args...) =
-                   ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), args...)
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname)) =
+                       ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)))
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), args...) =
+                       ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), args...)
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -462,13 +496,17 @@ macro delegate_twofields_astype(sourceType, firstfield, secondfield, targetedOps
     field2name = esc(Expr(:quote, secondfield))
     funcnames  = targetedOps.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), args...) =
-                    ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), args...)... )
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname)) =
+                        ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)))... )
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), args...) =
+                        ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), args...)... )
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -521,15 +559,20 @@ macro delegate_twofields_twovars(sourceType, firstfield, secondfield, targetedFu
     field2name = esc(Expr(:quote, secondfield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), args...) =
-                     ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)),
-                                 getfield(b, ($field1name)), getfield(b, ($field2name)),
-                                 args...)
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname)) =
+                         ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)),
+                                     getfield(b, ($field1name)), getfield(b, ($field2name)))
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), args...) =
+                         ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)),
+                                     getfield(b, ($field1name)), getfield(b, ($field2name)),
+                                     args...)
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -583,15 +626,20 @@ macro delegate_twofields_twovars_astype(sourceType, firstfield, secondfield, tar
     field2name = esc(Expr(:quote, secondfield))
     funcnames  = targetedOps.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), args...) =
-                    ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)),
-                                              getfield(b, ($field1name)), getfield(b, ($field2name)),
-                                              args...)... )
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname)) =
+                        ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)),
+                                                  getfield(b, ($field1name)), getfield(b, ($field2name)))... )
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), args...) =
+                        ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)),
+                                                  getfield(b, ($field1name)), getfield(b, ($field2name)),
+                                                  args...)... )
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -630,15 +678,21 @@ macro delegate_threefields(sourceType, firstfield, secondfield, thirdfield, targ
     field3name = esc(Expr(:quote, thirdfield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), args...) =
-                   ($funcname)(getfield(a, ($field1name)),
-                               getfield(a, ($field2name)),
-                               getfield(a, ($field3name)), args...)
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname)) =
+                       ($funcname)(getfield(a, ($field1name)),
+                                   getfield(a, ($field2name)),
+                                   getfield(a, ($field3name)))
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), args...) =
+                       ($funcname)(getfield(a, ($field1name)),
+                                   getfield(a, ($field2name)),
+                                   getfield(a, ($field3name)), args...)
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -677,15 +731,21 @@ macro delegate_threefields_astype(sourceType, firstfield, secondfield, thirdfiel
     field3name = esc(Expr(:quote, thirdfield))
     funcnames  = targetedOps.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), args...) =
-                    ($typesname)( ($funcname)(getfield(a, ($field1name)),
-                                              getfield(a, ($field2name)),
-                                              getfield(a, ($field3name)), args...)... )
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname)) =
+                        ($typesname)( ($funcname)(getfield(a, ($field1name)),
+                                                  getfield(a, ($field2name)),
+                                                  getfield(a, ($field3name)))... )
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), args...) =
+                        ($typesname)( ($funcname)(getfield(a, ($field1name)),
+                                                  getfield(a, ($field2name)),
+                                                  getfield(a, ($field3name)), args...)... )
+                   end
     end
     return Expr(:block, fdefs...)
 end
@@ -732,16 +792,22 @@ macro delegate_threefields_twovars(sourceType, firstfield, secondfield, thirdfie
     field3name = esc(Expr(:quote, thirdfield))
     funcnames  = targetedFuncs.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), args...) =
-                     ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
-                                 getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
-                                 args...)
-               end
-    end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname)) =
+                         ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
+                                     getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)))
+                   end
+        end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), args...) =
+                         ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
+                                     getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
+                                     args...)
+                   end
+        end
     return Expr(:block, fdefs...)
 end
 
@@ -783,15 +849,20 @@ macro delegate_threefields_twovars_astype(sourceType, firstfield, secondfield,  
     field3name = esc(Expr(:quote, thirdfield))
     funcnames  = targetedOps.args
     nfuncs = length(funcnames)
-    fdefs = Array{Expr}(undef, nfuncs)
+    fdefs = Array{Expr}(undef, nfuncs*2)
     for i in 1:nfuncs
-    funcname = esc(funcnames[i])
-    fdefs[i] = quote
-                 ($funcname)(a::($typesname), b::($typesname), args...) =
-                     ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
-                                               getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
-                                               args...)... )
-               end
+        funcname = esc(funcnames[i])
+        fdefs[i] = quote
+                     ($funcname)(a::($typesname), b::($typesname)) =
+                         ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
+                                                   getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)))... )
+                   end
+        fdefs[i+nfuncs] = quote
+                     ($funcname)(a::($typesname), b::($typesname), args...) =
+                         ($typesname)( ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
+                                                   getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
+                                                   args...)... )
+                   end
     end
     return Expr(:block, fdefs...)
 end
