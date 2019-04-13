@@ -807,7 +807,7 @@ macro delegate_threefields_twovars(sourceType, firstfield, secondfield, thirdfie
                                      getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
                                      args...)
                    end
-        end
+    end
     return Expr(:block, fdefs...)
 end
 
