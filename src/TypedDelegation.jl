@@ -798,13 +798,12 @@ macro delegate_threefields_twovars(sourceType, firstfield, secondfield, thirdfie
         fdefs[i] = quote
                      ($funcname)(a::($typesname), b::($typesname)) =
                          ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
-                                     getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)))
+                                     getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field2name)))
                    end
-        end
         fdefs[i+nfuncs] = quote
                      ($funcname)(a::($typesname), b::($typesname), args...) =
                          ($funcname)(getfield(a, ($field1name)), getfield(a, ($field2name)), getfield(a, ($field3name)),
-                                     getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field3name)),
+                                     getfield(b, ($field1name)), getfield(b, ($field2name)), getfield(b, ($field2name)),
                                      args...)
                    end
     end
