@@ -14,12 +14,3 @@ notifications:
 after_success:
   # push coverage results to Codecov
   - julia -e 'using Pkg; Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())  # Documentation: http://docs.travis-ci.com/user/languages/julia/
-jobs:
-  include:
-    - stage: "Documentation"
-      julia: 1.0
-      os: linux
-      script:
-        - julia --project=docs/ -e 'using Pkg; Pkg.instantiate(); Pkg.develop(PackageSpec(path=pwd()))'
-        - julia --project=docs/ --color=yes docs/make.jl
-      after_success: skip# Documentation:  http://docs.travis-ci.com/user/languages/julia/
