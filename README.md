@@ -101,7 +101,7 @@ using TypedDelegation
 
     struct MyInt16  
       value::Int16  
-    end;
+    end
 
     @delegate_onefield_twovars( MyInt16, value, [ (<), (<=) ] );
 
