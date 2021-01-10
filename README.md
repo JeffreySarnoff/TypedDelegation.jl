@@ -7,7 +7,7 @@
 ##### Copyright © 2016-2019 by Jeffrey Sarnoff.  Released under the MIT License.  
 
 ------
-[![Build Status](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl.svg?branch=master)](https://travis-ci.org/JuliaArbTypes/TypedDelegation.jl)
+[![Build Status](https://travis-ci.com/JeffreySarnoff/TypedDelegation.jl.svg?branch=master)](https://travis-ci.com/JeffreySarnoff/TypedDelegation.jl)
 =====
 
 ### Offers
